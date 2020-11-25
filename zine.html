@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WWMAIRS BOOKS</title>
+    <!-- <link rel="icon" type="img/png" href="favicons/line3.png"> -->
+    <link rel="stylesheet" href="https://use.typekit.net/svz0faz.css">
+    <link href="style.css?v=1.0.0" rel="stylesheet"/>
+    <script src="http://mozilla.github.io/pdf.js/build/pdf.js"></script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="nav">
+            <h1>
+                <a href="/">home</a>
+                >
+                <a href="/zines.html">zines</a>
+                >
+                <span id="title-nav"></span>
+            </h1>
+        </div>
+        <div class="content">
+            <div class="spreads-container">
+                <div class="page-container">
+                    <canvas class="pdf-page hidden-page" id="verso">
+                    </canvas>
+                </div>
+                <div class="page-container">
+                    <canvas class="pdf-page hidden-page" id="recto">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+        <div class="footer pdf-footer">
+            <div class="page-controls">
+                <h2>
+                    <span id="first-page" onclick="firstPage()"><<</span>
+                    <span id="back-page" onclick="backPage()"><</span>
+                    <span id="next-page" onclick="nextPage()">></span>
+                    <span id="last-page" onclick="lastPage()">>></span>
+                 </h2>
+            </div>
+            <div class="page-number">
+                <h2>
+                    <span id="current-page"></span>
+                    /
+                    <span id="total-pages"></span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+    var params = new URLSearchParams(window.location.search);
+    var title = params.get("title");
+    var pdfjsLib = window['pdfjs-dist/build/pdf'];
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "http://mozilla.github.io/pdf.js/build/pdf.worker.js";
+
+    var titleNav = document.getElementById("title-nav");
+    titleNav.innerHTML = title;
+    document.title = title;
+
+    var pdfURL = "/res/zines/" + title.replace(/ /gi, "_") + "/spreads.pdf";
+
+    var pdf;
+    var versoPageNum = null;
+    var rectoPageNum = 1;
+    var numPages = 0;
+    var recto = document.getElementById("recto");
+    var verso = document.getElementById("verso");
+    var scale = 2;
+
+    function nextPage() {
+        if (rectoPageNum != null) {
+            versoPageNum = rectoPageNum + 1;
+            rectoPageNum = versoPageNum != numPages ? versoPageNum + 1 : null;
+            render();
+        }
+    }
+
+    function backPage() {
+        if (versoPageNum != null) {
+            rectoPageNum = versoPageNum - 1;
+            versoPageNum = rectoPageNum != 1 ? rectoPageNum - 1 : null;
+            render();
+        }
+    }
+
+    function firstPage() {
+        versoPageNum = null;
+        rectoPageNum = 1;
+        render();
+    }
+
+    function lastPage() {
+        versoPageNum = numPages;
+        rectoPageNum = null
+        render();
+    }
+
+    function render() {
+        renderRecto();
+        renderVerso();
+    }
+
+    function renderRecto() {
+        if (rectoPageNum != null) {
+            document.getElementById("current-page").innerHTML = rectoPageNum;
+            renderPageFromNumberAndCanvas(rectoPageNum, recto);
+
+        } else {
+            recto.classList.add("hidden-page");
+        }
+    }
+
+    function renderVerso() {
+        if (versoPageNum != null) {
+            document.getElementById("current-page").innerHTML = versoPageNum;
+            renderPageFromNumberAndCanvas(versoPageNum, verso)
+        } else {
+            verso.classList.add("hidden-page");
+        }
+    }
+
+    function renderPageFromNumberAndCanvas(number, canvas) {
+        pdf.getPage(number).then(function (page) {
+            var viewport = page.getViewport({scale: scale});
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            var renderContext = {
+              canvasContext: canvas.getContext("2d"),
+              viewport: viewport
+            };
+            page.render(renderContext).promise.then(function() {
+                canvas.classList.remove("hidden-page");
+            });
+        });
+    }
+
+    pdfjsLib.getDocument(pdfURL).promise.then(function(_pdf) {
+        pdf = _pdf;
+        document.getElementById("total-pages").innerHTML = pdf.numPages;
+        numPages = pdf.numPages;
+        render();
+    }, function (reason) {
+        console.error(reason);
+    });
+
+    // display something if IE is the browser
+</script>

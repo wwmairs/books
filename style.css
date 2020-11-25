@@ -22,7 +22,6 @@ h1 {
 h2 {
     font-weight: 400;
     font-size: 18pt;
-    text-align: right;
     letter-spacing: 3px;
     margin-top: 0px;
 }
@@ -45,8 +44,18 @@ a {
     border-bottom: 1px solid black;
 }
 
+.nav {
+    text-align: right;
+    border-bottom: 1px solid black;
+}
+
 .content {
     position: relative;
+}
+
+.footer {
+    text-align: right;
+    border-top: 1px solid black;
 }
 
 .panes-container {
@@ -61,10 +70,8 @@ a {
     gap: 40px;
 }
 
-.pane {
-}
-
 .pane-title {
+    text-align: right;
     margin-bottom: 0px;
     position: relative;
     bottom: -.25em;
@@ -76,7 +83,49 @@ a {
     height: calc(100% - 42px);
 }
 
-.footer {
-    text-align: right;
-    border-top: 1px solid black;
+.spreads-container {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    transform: translateY(-50%);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.page-container {
+    width: 100%;
+    position: relative;
+}
+
+#verso {
+    position: absolute;
+    right: 0;
+}
+
+.hidden-page {
+    opacity: 0;
+}
+
+.pdf-page {
+    border: 1px solid black;
+    direction: ltr;
+}
+
+.pdf-footer {
+    display: grid; 
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.page-controls {
+    text-align: center;
+    grid-column: 2;
+}
+
+.page-controls:hover {
+    cursor: pointer;
+}
+
+.page-number {
+    grid-column: 3;
 }
