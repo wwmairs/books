@@ -53,34 +53,29 @@ a {
     position: relative;
 }
 
+#index-links-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.index-links {
+    display: block;
+    text-align: center;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    border-bottom: 1px solid white;
+}
+
+.index-links:hover {
+    border-bottom: 1px solid black;
+}
+
 .footer {
     text-align: right;
     border-top: 1px solid black;
-}
-
-.panes-container {
-    position: absolute;
-    top: 50%;
-    transform: translateY(calc(-50% - 10px));
-    height: calc(100% - 40pt);
-    max-height: 50vw;
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 40px;
-}
-
-.pane-title {
-    text-align: right;
-    margin-bottom: 0px;
-    position: relative;
-    bottom: -.25em;
-    border-bottom: none;
-}
-
-.pane-img-container {
-    border: 1px solid black;
-    height: calc(100% - 42px);
 }
 
 .spreads-container {
