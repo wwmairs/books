@@ -49,7 +49,7 @@ a {
     border-bottom: 1px solid black;
 }
 
-.content {
+#content {
     position: relative;
 }
 
@@ -128,4 +128,20 @@ a {
 
 .page-number {
     grid-column: 3;
+}
+
+.hidden {
+    transition: all .35s ease-in;
+}
+
+.nav.hideable.hidden {
+    opacity: 0;
+}
+
+.footer.hideable.hidden {
+    border-top: none;
+}
+
+.page-number.hideable.hidden {
+    display: none;
 }
