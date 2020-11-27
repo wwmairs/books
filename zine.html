@@ -72,17 +72,16 @@
     var numPages = 0;
     var recto = document.getElementById("recto");
     var verso = document.getElementById("verso");
-    var scale = 2;
+    var scale = 3;
 
     // hide nav for content onmouseout
-    document.getElementById("content").onmouseout = function() {
-        console.log("mouseout");
+    document.getElementById("content").onmouseleave = function(e) {
         window.setTimeout(function() {
             hideThings();
-        }, 1250)
+        }, 1250);
     }
 
-    document.getElementById("content").onmouseover = function() {
+    document.getElementById("content").onmouseenter = function(e) {
         showThings();
     }
 
@@ -142,8 +141,13 @@
     }
 
     function lastPage() {
-        versoPageNum = numPages;
-        rectoPageNum = null
+        if (numPages % 2 == 0) {
+            versoPageNum = numPages;
+            rectoPageNum = null   
+        } else {
+            versoPageNum = numPages - 1;
+            rectoPageNum = numPages;
+        }
         render();
     }
 
