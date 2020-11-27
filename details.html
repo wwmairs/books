@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WWMAIRS BOOKS</title>
+    <!-- <link rel="icon" type="img/png" href="favicons/line3.png"> -->
+    <link rel="stylesheet" href="https://use.typekit.net/svz0faz.css">
+    <link href="style.css?v=1.0.0" rel="stylesheet"/>
+    <script src="http://mozilla.github.io/pdf.js/build/pdf.js"></script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="nav">
+            <h1>
+                <a href="/">home</a>
+                >
+                <a id="category-nav"></a>
+                >
+                <span id="title-nav"></span>
+            </h1>
+        </div>
+        <div id="content">
+            <div class="spreads-container">
+                <div class="details-container">
+                    <p id="title"></p>
+                    <p id="details"></p>
+                    <p id="description"></p>
+                    <p id="price"></p>
+                    <p><a id="view-link">view online</a></p>
+                </div>
+                <div id="img-container"></div>
+            </div>
+        </div>
+        <div class="footer">
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+    // grab title from query param
+    // use that to grab data from entries.json
+    // fill in the category and title navs
+    // use path to grab details.json
+    // fill in title, details, description, price if exists, link to view
+    var entry; 
+    var details;
+    var params = new URLSearchParams(window.location.search);
+    var title = params.get("title");
+
+    fetch("/entries.json").then(function (data) {
+        return data.json();
+    }).then (function (json) {
+        entry = json.find(function (o) { return o.title == title });
+        fetch(entry.path + "details.json").then(function (data) {
+            return data.json();
+        }).then(function (json) {
+            details = json;
+            init();
+        });
+    });
+
+    function init() {
+        document.title = title;
+        document.getElementById("title-nav").innerHTML = title;
+        var categoryNav = document.getElementById("category-nav");
+        categoryNav.innerHTML = entry.category;
+        categoryNav.href = "/" + entry.category;
+        document.getElementById("title").innerHTML = details.title;
+        document.getElementById("details").innerHTML = details.details;
+        document.getElementById("description").innerHTML = details.description;
+        document.getElementById("view-link").href = "view.html?title=" + title;
+        if (details.price) {
+            document.getElementById("price").innerHTML = "$" + details.price + " for a physical object";
+        }
+        var imgContainer = document.getElementById("img-container");
+        for(var i = 1; i <= details.numPhotos; i++) {
+            var img = document.createElement("img");
+            img.src = entry.path + "imgs/img-" + i + ".jpg";
+            imgContainer.appendChild(img);
+        }
+    }
+</script>

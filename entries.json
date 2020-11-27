@@ -1,0 +1,27 @@
+[
+    {
+        "title": "shapes left behind",
+        "path": "/res/books/shapes_left_behind/",
+        "category": "books"
+    },
+    {
+        "title": "another fall",
+        "path": "/res/books/another_fall/",
+        "category": "books"
+    },
+    {
+        "title": "taipei tokyo",
+        "path": "/res/books/taipei_tokyo/",
+        "category": "books"
+    },
+    {
+        "title": "test",
+        "path": "/res/zines/test/",
+        "category": "zines"
+    },
+    {
+        "title": "sun spots",
+        "path": "/res/zines/sun_spots/",
+        "category": "zines"
+    }
+]

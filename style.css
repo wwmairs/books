@@ -26,6 +26,11 @@ h2 {
     margin-top: 0px;
 }
 
+p {
+    font-size: 14px;
+    margin-top: 0px;
+}
+
 a {
     color: black;
     text-decoration: none;
@@ -139,4 +144,36 @@ a {
 
 .page-number.hideable.hidden {
     display: none;
+}
+
+.details-container {
+    text-align: right;
+}
+
+#details {
+    font-style: italic;
+}
+
+#view-link {
+    border-bottom: 1px solid black;
+}
+
+#img-container {
+    max-height: 66vh;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    cursor: ns-resize;
+}
+
+#img-container::-webkit-scrollbar {
+    display: none;
+}
+
+#img-container img {
+    width: 100%;
+}
+
+#img-container img:not(:last-child) {
+    margin-bottom: 40px;
 }

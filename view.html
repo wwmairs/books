@@ -17,7 +17,7 @@
             <h1>
                 <a href="/">home</a>
                 >
-                <a href="/zines.html">zines</a>
+                <a id="category-nav"></a>
                 >
                 <span id="title-nav"></span>
             </h1>
@@ -55,33 +55,57 @@
 </html>
 
 <script>
-    var params = new URLSearchParams(window.location.search);
-    var title = params.get("title");
     var pdfjsLib = window['pdfjs-dist/build/pdf'];
     pdfjsLib.GlobalWorkerOptions.workerSrc = "http://mozilla.github.io/pdf.js/build/pdf.worker.js";
 
-    var titleNav = document.getElementById("title-nav");
-    titleNav.innerHTML = title;
-    document.title = title;
-
-    var pdfURL = "/res/zines/" + title.replace(/ /gi, "_") + "/spreads.pdf";
-
+    var timeout;
+    var entry; 
+    var params = new URLSearchParams(window.location.search);
+    var title = params.get("title");
     var pdf;
     var versoPageNum = null;
     var rectoPageNum = 1;
     var numPages = 0;
     var recto = document.getElementById("recto");
     var verso = document.getElementById("verso");
-    var scale = 3;
+    var scale = 1.5;
+    fetch("/entries.json").then(function (data) {
+        return data.json();
+    }).then (function (json) {
+        entry = json.find(function (o) { return o.title == title });
+        init();
+    });
+
+    function init() {
+
+        var titleNav = document.getElementById("title-nav");
+        titleNav.innerHTML = title;
+        document.title = title;
+        var categoryNav = document.getElementById("category-nav");
+        categoryNav.innerHTML = entry.category;
+        categoryNav.href = "/" + entry.category;
+        var pdfURL = entry.path + "spreads.pdf";
+        pdfjsLib.getDocument(pdfURL).promise.then(function(_pdf) {
+            pdf = _pdf;
+            document.getElementById("total-pages").innerHTML = pdf.numPages;
+            numPages = pdf.numPages;
+            render();
+        }, function (reason) {
+            console.error(reason);
+        });
+    }
+
+
 
     // hide nav for content onmouseout
     document.getElementById("content").onmouseleave = function(e) {
-        window.setTimeout(function() {
+        timeout = window.setTimeout(function() {
             hideThings();
         }, 1250);
     }
 
     document.getElementById("content").onmouseenter = function(e) {
+        window.clearTimeout(timeout);
         showThings();
     }
 
@@ -191,14 +215,7 @@
         });
     }
 
-    pdfjsLib.getDocument(pdfURL).promise.then(function(_pdf) {
-        pdf = _pdf;
-        document.getElementById("total-pages").innerHTML = pdf.numPages;
-        numPages = pdf.numPages;
-        render();
-    }, function (reason) {
-        console.error(reason);
-    });
+
 
     // display something if IE is the browser
 </script>
