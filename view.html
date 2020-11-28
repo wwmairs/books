@@ -83,7 +83,7 @@
         document.title = title;
         var categoryNav = document.getElementById("category-nav");
         categoryNav.innerHTML = entry.category;
-        categoryNav.href = "/" + entry.category;
+        categoryNav.href = "/list.html?category=" + entry.category;
         var pdfURL = entry.path + "spreads.pdf";
         pdfjsLib.getDocument(pdfURL).promise.then(function(_pdf) {
             pdf = _pdf;

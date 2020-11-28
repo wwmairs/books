@@ -190,6 +190,10 @@ a {
     margin-bottom: 15px;
 }
 
+.entry-wrapper-link {
+    display: block;
+}
+
 .entry-title {
     text-align: right;
     margin-bottom: -5px;

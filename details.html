@@ -68,7 +68,7 @@
         document.getElementById("title-nav").innerHTML = title;
         var categoryNav = document.getElementById("category-nav");
         categoryNav.innerHTML = entry.category;
-        categoryNav.href = "/" + entry.category;
+        categoryNav.href = "/list.html?category=" + entry.category;
         document.getElementById("title").innerHTML = details.title;
         document.getElementById("details").innerHTML = details.details;
         document.getElementById("description").innerHTML = details.description;

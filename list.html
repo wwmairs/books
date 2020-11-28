@@ -59,7 +59,7 @@
         document.title = category;
         var categoryNav = document.getElementById("category-nav");
         categoryNav.innerHTML = category;
-        categoryNav.href = "/list.html?cateory=" + category;
+        categoryNav.href = "/list.html?category=" + category;
 
         var entriesContainer = document.getElementById("entries-container");
         var entryColumns = document.getElementsByClassName("entry-column");
@@ -67,14 +67,18 @@
             var entry = entries[i];
             var div = document.createElement("div");
             div.setAttribute("class", "entry");
+            var entryWrapperLink = document.createElement("a");
+            entryWrapperLink.setAttribute("class", "entryWrapperLink");
+            entryWrapperLink.setAttribute("href", "/details.html?title=" + entry.title);
             var entryTitle = document.createElement("h2");
             entryTitle.innerHTML = entry.title;
             entryTitle.setAttribute("class", "entry-title");
             var coverImg = document.createElement("img");
             coverImg.setAttribute("src", entry.path + entry.coverImg);
             coverImg.setAttribute("class", "entry-img");
-            div.appendChild(entryTitle);
-            div.appendChild(coverImg);
+            entryWrapperLink.appendChild(entryTitle);
+            entryWrapperLink.appendChild(coverImg);
+            div.appendChild(entryWrapperLink);
 
             if (isMobile) {
                 entriesContainer.appendChild(div);
