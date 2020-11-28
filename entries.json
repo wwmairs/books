@@ -2,16 +2,19 @@
     {
         "title": "shapes left behind",
         "path": "/res/books/shapes_left_behind/",
+        "coverImg": "img-1.jpg",
         "category": "books"
     },
     {
         "title": "another fall",
         "path": "/res/books/another_fall/",
+        "coverImg": "img-1.jpg",
         "category": "books"
     },
     {
         "title": "taipei tokyo",
         "path": "/res/books/taipei_tokyo/",
+        "coverImg": "img-2.jpg",
         "category": "books"
     },
     {

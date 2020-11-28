@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WWMAIRS BOOKS</title>
+    <!-- <link rel="icon" type="img/png" href="favicons/line3.png"> -->
+    <link rel="stylesheet" href="https://use.typekit.net/svz0faz.css">
+    <link href="style.css?v=1.0.0" rel="stylesheet"/>
+    <script src="http://mozilla.github.io/pdf.js/build/pdf.js"></script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="nav">
+            <h1>
+                <a href="/">home</a>
+                >
+                <a id="category-nav"></a>
+            </h1>
+        </div>
+        <div id="content">
+            <div id="entries-container">
+                <div class="entry-column">
+                </div>
+                <div class="entry-column">
+                </div>
+                <div class="entry-column">
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+    // grab title from query param
+    // use that to grab data from entries.json
+    // fill in the category and title navs
+    // use path to grab details.json
+    // fill in title, details, description, price if exists, link to view
+    var entries; 
+    var params = new URLSearchParams(window.location.search);
+    var category = params.get("category");
+
+    fetch("/entries.json").then(function (data) {
+        return data.json();
+    }).then (function (json) {
+        entries = json.filter(function (e) { return e.category == category });
+        init();
+    });
+
+    function init() {
+        var vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+        var isMobile = vw < 720;
+        document.title = category;
+        var categoryNav = document.getElementById("category-nav");
+        categoryNav.innerHTML = category;
+        categoryNav.href = "/list.html?cateory=" + category;
+
+        var entriesContainer = document.getElementById("entries-container");
+        var entryColumns = document.getElementsByClassName("entry-column");
+        for(var i = 0; i < entries.length; i++) {
+            var entry = entries[i];
+            var div = document.createElement("div");
+            div.setAttribute("class", "entry");
+            var entryTitle = document.createElement("h2");
+            entryTitle.innerHTML = entry.title;
+            entryTitle.setAttribute("class", "entry-title");
+            var coverImg = document.createElement("img");
+            coverImg.setAttribute("src", entry.path + entry.coverImg);
+            coverImg.setAttribute("class", "entry-img");
+            div.appendChild(entryTitle);
+            div.appendChild(coverImg);
+
+            if (isMobile) {
+                entriesContainer.appendChild(div);
+            } else {
+                var columnIndex = i % 3;
+                entryColumns[columnIndex].appendChild(div);   
+            }
+        }
+    }
+</script>
