@@ -17,9 +17,6 @@
         </div>
         <div class="content">
             <div id="index-links-container">
-                <h2><a class="index-links" href="/list.html?category=books">books</a></h2>
-                <h2><a class="index-links" href="/list.html?category=boxes">boxes</a></h2>
-                <h2><a class="index-links" href="/list.html?category=zines">zines</a></h2>
             </div>
         </div>
         <div class="footer">
@@ -32,3 +29,28 @@
     </div>
 </body>
 </html>
+
+<script>
+    var entries;
+    var categories = new Set();
+    fetch("/entries.json").then(function (data) {
+        return data.json();
+    }).then (function (json) {
+        entries = json;
+        init();
+    });
+
+    function init() {
+        entries.map(function (e) { categories.add(e.category) });
+        var linksContainer = document.getElementById("index-links-container");
+        categories.forEach(function (c) {
+            var h2 = document.createElement("h2");
+            var link = document.createElement("a");
+            link.setAttribute("class", "index-links");
+            link.setAttribute("href", "/list.html?category=" + c);
+            link.innerHTML = c;
+            h2.appendChild(link);
+            linksContainer.appendChild(h2);
+        });
+    }
+</script>
