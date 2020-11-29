@@ -18,6 +18,21 @@
         "category": "books"
     },
     {
+        "title": "special printings",
+        "path": "/res/books/special_printings",
+        "category": "books"
+    },
+    {
+        "title": "rebindings",
+        "path": "/res/books/rebindings",
+        "category": "books"
+    },
+    {
+        "title": "journals",
+        "path": "/res/books/jourals",
+        "category": "books"
+    },
+    {
         "title": "test",
         "path": "/res/zines/test/",
         "category": "zines"

@@ -55,6 +55,7 @@
 
     function init() {
         var vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+        console.log(vw);
         var isMobile = vw < 720;
         document.title = category;
         var categoryNav = document.getElementById("category-nav");
@@ -69,7 +70,7 @@
             div.setAttribute("class", "entry");
             var entryWrapperLink = document.createElement("a");
             entryWrapperLink.setAttribute("class", "entryWrapperLink");
-            entryWrapperLink.setAttribute("href", "/details.html?title=" + entry.title);
+            entryWrapperLink.setAttribute("href", getEntryLink(entry));
             var entryTitle = document.createElement("h2");
             entryTitle.innerHTML = entry.title;
             entryTitle.setAttribute("class", "entry-title");
@@ -86,6 +87,16 @@
                 var columnIndex = i % 3;
                 entryColumns[columnIndex].appendChild(div);   
             }
+        }
+    }
+
+    function getEntryLink(entry) {
+        console.log(entry);
+        if (entry.category == "zines") {
+            return "/zine.html?title=" + entry.title;
+        }
+        else {
+            return "/details.html?title=" + entry.title;
         }
     }
 </script>

@@ -56,7 +56,6 @@ a {
 
 #content {
     position: relative;
-    overflow-y: scroll;
 }
 
 #index-links-container {
@@ -147,7 +146,7 @@ a {
     display: none;
 }
 
-.details-container {
+#details-container {
     text-align: right;
     margin-left: 25vw;
 }

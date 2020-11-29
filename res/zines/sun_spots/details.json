@@ -1,8 +1,6 @@
-[
-    {
-        "name": "Sun Spots",
-        "details": "8x11 octavo",
-        "price": "3",
-        "description": "a small series from expired kodak portra.  summer 2019",
-    }
-]
+{
+    "title": "Sun Spots",
+    "details": "8x11 octavo",
+    "price": "3",
+    "description": "a small series from expired kodak portra.  summer 2019"
+}

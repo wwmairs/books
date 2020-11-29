@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WWMAIRS BOOKS</title>
+    <!-- <link rel="icon" type="img/png" href="favicons/line3.png"> -->
+    <link rel="stylesheet" href="https://use.typekit.net/svz0faz.css">
+    <link href="style.css?v=1.0.0" rel="stylesheet"/>
+    <script src="http://mozilla.github.io/pdf.js/build/pdf.js"></script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="nav hideable">
+            <h1>
+                <a href="/">home</a>
+                >
+                <a id="category-nav"></a>
+                >
+                <span id="title-nav"></span>
+            </h1>
+        </div>
+        <div id="content">
+            <div class="spreads-container">
+                <div id="details-container">
+                    <p id="title"></p>
+                    <p id="details"></p>
+                    <p id="description"></p>
+                    <p id="price"></p>
+                </div>
+                <div id="verso-container" class="page-container">
+                    <canvas class="pdf-page hidden-page" id="verso">
+                    </canvas>
+                </div>
+                <div class="page-container">
+                    <canvas class="pdf-page hidden-page" id="recto">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+        <div class="footer pdf-footer hideable">
+            <div class="page-controls">
+                <h2>
+                    <span id="first-page" onclick="firstPage()"><<</span>
+                    <span id="back-page" onclick="backPage()"><</span>
+                    <span id="next-page" onclick="nextPage()">></span>
+                    <span id="last-page" onclick="lastPage()">>></span>
+                 </h2>
+            </div>
+            <div class="page-number hideable">
+                <h2>
+                    <span id="current-page"></span>
+                    /
+                    <span id="total-pages"></span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+    var pdfjsLib = window['pdfjs-dist/build/pdf'];
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "http://mozilla.github.io/pdf.js/build/pdf.worker.js";
+
+    var timeout;
+    var entry; 
+    var details;
+    var params = new URLSearchParams(window.location.search);
+    var title = params.get("title");
+    var pdf;
+    var versoPageNum = null;
+    var rectoPageNum = 1;
+    var numPages = 0;
+    var recto = document.getElementById("recto");
+    var verso = document.getElementById("verso");
+    var scale = 1.5;
+    fetch("/entries.json").then(function (data) {
+        return data.json();
+    }).then (function (json) {
+        entry = json.find(function (o) { return o.title == title });
+        fetch(entry.path + "details.json").then(function (data) {
+            return data.json();
+        }).then(function (json) {
+            details = json;
+            init();
+        });
+    });
+
+    function init() {
+
+        var titleNav = document.getElementById("title-nav");
+        titleNav.innerHTML = title;
+        document.title = title;
+        var categoryNav = document.getElementById("category-nav");
+        categoryNav.innerHTML = entry.category;
+        categoryNav.href = "/list.html?category=" + entry.category;
+        document.getElementById("title").innerHTML = details.title;
+        document.getElementById("details").innerHTML = details.details;
+        document.getElementById("description").innerHTML = details.description;
+        if (details.price) {
+            document.getElementById("price").innerHTML = "$" + details.price + " for a physical object";
+        }
+        var pdfURL = entry.path + "spreads.pdf";
+        pdfjsLib.getDocument(pdfURL).promise.then(function(_pdf) {
+            pdf = _pdf;
+            document.getElementById("total-pages").innerHTML = pdf.numPages;
+            numPages = pdf.numPages;
+            render();
+        }, function (reason) {
+            console.error(reason);
+        });
+    }
+
+
+    function showDetails() {
+        document.getElementById("details-container").style.display = "block";
+        document.getElementById("verso-container").style.display = "none";
+    }
+
+    function hideDetails() {
+        document.getElementById("details-container").style.display = "none";
+        document.getElementById("verso-container").style.display = "block";
+    }
+
+    // hide nav for content onmouseout
+    document.getElementById("content").onmouseleave = function(e) {
+        timeout = window.setTimeout(function() {
+            hideThings();
+        }, 1250);
+    }
+
+    document.getElementById("content").onmouseenter = function(e) {
+        window.clearTimeout(timeout);
+        showThings();
+    }
+
+    function hideThings() {
+        var elements = document.getElementsByClassName("hideable");
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].classList.add("hidden");
+        }
+    }
+
+    function showThings() {
+        var elements = document.getElementsByClassName("hideable");
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].classList.remove("hidden");
+        }
+    }
+
+
+    // zine viewer wireup
+    document.onkeydown = function(e) {
+        switch(e.which) {
+            // left
+            case 37: 
+            backPage();
+            break;
+
+            // right
+            case 39: 
+            nextPage();
+            break;
+
+            default: return;
+        }
+        e.preventDefault();
+    };
+
+    function nextPage() {
+        if (rectoPageNum != null) {
+            versoPageNum = rectoPageNum + 1;
+            rectoPageNum = versoPageNum != numPages ? versoPageNum + 1 : null;
+            render();
+        }
+    }
+
+    function backPage() {
+        if (versoPageNum != null) {
+            rectoPageNum = versoPageNum - 1;
+            versoPageNum = rectoPageNum != 1 ? rectoPageNum - 1 : null;
+            render();
+        }
+    }
+
+    function firstPage() {
+        versoPageNum = null;
+        rectoPageNum = 1;
+        render();
+    }
+
+    function lastPage() {
+        if (numPages % 2 == 0) {
+            versoPageNum = numPages;
+            rectoPageNum = null   
+        } else {
+            versoPageNum = numPages - 1;
+            rectoPageNum = numPages;
+        }
+        render();
+    }
+
+    function render() {
+        renderRecto();
+        renderVerso();
+    }
+
+    function renderRecto() {
+        if (rectoPageNum != null) {
+            document.getElementById("current-page").innerHTML = rectoPageNum;
+            renderPageFromNumberAndCanvas(rectoPageNum, recto);
+
+        } else {
+            recto.classList.add("hidden-page");
+        }
+    }
+
+    function renderVerso() {
+        if (versoPageNum != null) {
+            document.getElementById("current-page").innerHTML = versoPageNum;
+            renderPageFromNumberAndCanvas(versoPageNum, verso);
+            hideDetails();
+        } else {
+            verso.classList.add("hidden-page");
+            showDetails();
+        }
+    }
+
+    function renderPageFromNumberAndCanvas(number, canvas) {
+        pdf.getPage(number).then(function (page) {
+            var viewport = page.getViewport({scale: scale});
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            var renderContext = {
+              canvasContext: canvas.getContext("2d"),
+              viewport: viewport
+            };
+            page.render(renderContext).promise.then(function() {
+                canvas.classList.remove("hidden-page");
+            });
+        });
+    }
+
+
+
+    // display something if IE is the browser
+</script>
