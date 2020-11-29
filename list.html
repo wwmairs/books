@@ -31,6 +31,9 @@
             </div>
         </div>
         <div class="footer">
+            <h2>
+                wwmairs 2020
+             </h2>
         </div>
     </div>
 </body>
@@ -49,8 +52,7 @@
     });
 
     function init() {
-        var vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
-        console.log(vw);
+        var vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
         var isMobile = vw < 720;
         document.title = category;
         var categoryNav = document.getElementById("category-nav");
@@ -86,7 +88,6 @@
     }
 
     function getEntryLink(entry) {
-        console.log(entry);
         if (entry.category == "zines") {
             return "/zine.html?title=" + entry.title;
         }

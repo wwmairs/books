@@ -19,7 +19,7 @@
                 >
                 <a id="category-nav"></a>
                 >
-                <span id="title-nav"></span>
+                <a id="title-nav"></a>
             </h1>
         </div>
         <div id="content">
@@ -35,6 +35,9 @@
             </div>
         </div>
         <div class="footer">
+            <h2>
+                wwmairs 2020
+             </h2>
         </div>
     </div>
 </body>
@@ -65,7 +68,9 @@
 
     function init() {
         document.title = title;
-        document.getElementById("title-nav").innerHTML = title;
+        var titleNav = document.getElementById("title-nav");
+        titleNav.innerHTML = title;
+        titleNav.href = "details.html?title=" + title;
         var categoryNav = document.getElementById("category-nav");
         categoryNav.innerHTML = entry.category;
         categoryNav.href = "/list.html?category=" + entry.category;
