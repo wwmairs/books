@@ -5,29 +5,30 @@ html {
 }
 
 body {
-    margin-left: 50px;
-    margin-right: 50px;
+    margin-left: 30px;
+    margin-right: 30px;
     margin-top: 0;
     margin-bottom: 0;
 }
 
 h1 {
     font-weight: 400;
-    font-size: 18pt;
+    font-size: 14pt;
     letter-spacing: 3px;
-    margin-top: 40px;
     margin-bottom: 0px;
+    margin-top: 20px;
 }
 
 h2 {
     font-weight: 400;
-    font-size: 14pt;
+    font-size: 12pt;
     letter-spacing: 3px;
     margin-top: 0px;
+    margin-bottom: 0px;
 }
 
 p {
-    font-size: 14px;
+    font-size: 12px;
     margin-top: 0px;
 }
 
@@ -39,7 +40,7 @@ a {
 
 .wrapper {
     display: grid;
-    grid-template-rows: 90px 1fr 90px;
+    grid-template-rows: 50px 1fr 50px;
     height: 100vh;
 }
 
@@ -71,6 +72,7 @@ a {
     text-decoration: none;
     cursor: pointer;
     border-bottom: 1px solid white;
+    margin-bottom: 5px;
 }
 
 .index-links:hover {

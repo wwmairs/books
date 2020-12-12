@@ -32,9 +32,10 @@
         "path": "/res/books/jourals",
         "category": "books"
     },
+
     {
-        "title": "test",
-        "path": "/res/zines/test/",
+        "title": "more lines",
+        "path": "/res/zines/more_lines/",
         "category": "zines"
     },
     {
