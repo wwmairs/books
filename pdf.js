@@ -25,7 +25,11 @@ class PDFViewer {
     }
 
     initLoadedPDF() {
-        for (var i = 0; i < this.numPages; i++) {
+        var totalPages = this.numPages + 1;
+        if (this.numPages % 2 == 0) {
+            totalPages += 1;
+        }
+        for (var i = 0; i < totalPages; i++) {
             this.initPage(i);
         }
     }
@@ -33,30 +37,34 @@ class PDFViewer {
     initPage(index) {
         var _that = this;
         var div = document.createElement("div");
-        var canvas = document.createElement("canvas");
-        canvas.setAttribute("class", "pdf-page");
         div.style.display = "none";
-        div.appendChild(canvas);
         div.setAttribute("class", "page-container");
         this.container.appendChild(div);
         this.pages.push(div);
-        this.pdf.getPage(index + 1).then(function (page) {
-            var viewport = page.getViewport({scale: _that.scale});
-            canvas.height = viewport.height;
-            canvas.width = viewport.width;
+        if (index == 0 || (index == this.numPages + 1 && this.numPages % 2 == 0)) {
+        } else {
+            var canvas = document.createElement("canvas");
+            canvas.setAttribute("class", "pdf-page");
+            div.appendChild(canvas);
+            this.pdf.getPage(index).then(function (page) {
+                var viewport = page.getViewport({scale: _that.scale});
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+                div.style.height = viewport.height + "px";
 
-            var renderContext = {
-              canvasContext: canvas.getContext("2d"),
-              viewport: viewport
-            };
-            page.render(renderContext).promise.then(function() {
-                if (index == 0) {
-                    _that.renderFirstPage();
-                }
-            }, function (reason) {
-                console.error(reason);
+                var renderContext = {
+                  canvasContext: canvas.getContext("2d"),
+                  viewport: viewport
+                };
+                page.render(renderContext).promise.then(function() {
+                    if (index == 1) {
+                        _that.renderFirstPage();
+                    }
+                }, function (reason) {
+                    console.error(reason);
+                });
             });
-        });
+        }
     }
 
     hideAllPages() {
@@ -78,31 +86,27 @@ class PDFViewer {
     }
 
     renderFirstPage() {
-        this.renderIndeces(null, 0);
+        this.renderIndeces(0, 1);
     }
 
     renderLastPage() {
-        if (this.numPages % 2 == 0) {
-            this.renderIndeces(this.numPages - 1, null);
-        } else {
-            this.renderIndeces(this.numPages - 2, this.numPages - 1);
-        }
+        this.renderIndeces(this.numPages, this.numPages + 1);
     }
 
     renderNextSpreads() {
-        if (this.rectoIndex != null && this.rectoIndex != this.numPages - 1) {
-            this.renderIndeces(this.rectoIndex + 1, this.rectoIndex != this.numPages - 2 ? this.rectoIndex + 2 : null);
+        if (this.rectoIndex != this.numPages && (this.numPages % 2 == 1 || this.rectoIndex != this.numPages + 1)) {
+            this.renderIndeces(this.versoIndex + 2, this.rectoIndex + 2);
         }
     }
 
     renderPrevSpreads() {
-        if (this.versoIndex != null) {
-            this.renderIndeces(this.versoIndex > 1 ? this.versoIndex - 2 : null, this.versoIndex - 1);
+        if (this.versoIndex != 0) {
+            this.renderIndeces(this.versoIndex - 2, this.rectoIndex - 2);
         }
     }
 
     renderIndeces(versoIndex, rectoIndex) {
-        console.log("rendering:", versoIndex, rectoIndex);
+        console.log("rendering", versoIndex, rectoIndex);
         this.versoIndex = versoIndex;
         this.rectoIndex = rectoIndex;
         this.hideAllPages();

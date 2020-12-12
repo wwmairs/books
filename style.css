@@ -101,7 +101,7 @@ a {
     position: relative;
 }
 
-#verso {
+.page-container:nth-child(odd) > canvas {
     position: absolute;
     right: 0;
 }
