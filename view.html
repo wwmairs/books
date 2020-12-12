@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://use.typekit.net/svz0faz.css">
     <link href="style.css?v=1.0.0" rel="stylesheet"/>
     <script src="http://mozilla.github.io/pdf.js/build/pdf.js"></script>
+    <script src="pdf.js"></script>
 </head>
 
 <body>
@@ -23,31 +24,19 @@
             </h1>
         </div>
         <div id="content">
-            <div class="spreads-container">
-                <div class="page-container">
-                    <canvas class="pdf-page hidden-page" id="verso">
-                    </canvas>
-                </div>
-                <div class="page-container">
-                    <canvas class="pdf-page hidden-page" id="recto">
-                    </canvas>
-                </div>
+            <div id="spreads-container">
             </div>
         </div>
         <div class="footer pdf-footer hideable">
             <div class="page-controls">
                 <h2>
-                    <span id="first-page" onclick="firstPage()"><<</span>
-                    <span id="back-page" onclick="backPage()"><</span>
-                    <span id="next-page" onclick="nextPage()">></span>
-                    <span id="last-page" onclick="lastPage()">>></span>
+                    <span id="first-page" onclick="pdf.renderFirstPage()"><<</span>
+                    <span id="back-page" onclick="pdf.renderNextSpreads()"><</span>
+                    <span id="next-page" onclick="pdf.renderPrevSpreads()">></span>
+                    <span id="last-page" onclick="pdf.renderLastPage()">>></span>
                  </h2>
             </div>
             <div class="page-number hideable">
-                <h2>
-                    <span id="current-page"></span>
-                    /
-                    <span id="total-pages"></span>
             </div>
         </div>
     </div>
@@ -55,20 +44,11 @@
 </html>
 
 <script>
-    var pdfjsLib = window['pdfjs-dist/build/pdf'];
-    pdfjsLib.GlobalWorkerOptions.workerSrc = "http://mozilla.github.io/pdf.js/build/pdf.worker.js";
-
     var timeout;
     var entry; 
     var params = new URLSearchParams(window.location.search);
     var title = params.get("title");
     var pdf;
-    var versoPageNum = null;
-    var rectoPageNum = 1;
-    var numPages = 0;
-    var recto = document.getElementById("recto");
-    var verso = document.getElementById("verso");
-    var scale = 1.5;
     fetch("/entries.json").then(function (data) {
         return data.json();
     }).then (function (json) {
@@ -77,7 +57,6 @@
     });
 
     function init() {
-
         var titleNav = document.getElementById("title-nav");
         titleNav.innerHTML = title;
         titleNav.href = "/details.html?title=" + title;
@@ -86,17 +65,9 @@
         categoryNav.innerHTML = entry.category;
         categoryNav.href = "/list.html?category=" + entry.category;
         var pdfURL = entry.path + "spreads.pdf";
-        pdfjsLib.getDocument(pdfURL).promise.then(function(_pdf) {
-            pdf = _pdf;
-            document.getElementById("total-pages").innerHTML = pdf.numPages;
-            numPages = pdf.numPages;
-            render();
-        }, function (reason) {
-            console.error(reason);
-        });
+        var container = document.getElementById("spreads-container")
+        pdf = new PDFViewer(container, pdfURL);
     }
-
-
 
     // hide nav for content onmouseout
     document.getElementById("content").onmouseleave = function(e) {
@@ -130,92 +101,18 @@
         switch(e.which) {
             // left
             case 37: 
-            backPage();
+            pdf.renderPrevSpreads();
             break;
 
             // right
             case 39: 
-            nextPage();
+            pdf.renderNextSpreads();
             break;
 
             default: return;
         }
         e.preventDefault();
     };
-
-    function nextPage() {
-        if (rectoPageNum != null) {
-            versoPageNum = rectoPageNum + 1;
-            rectoPageNum = versoPageNum != numPages ? versoPageNum + 1 : null;
-            render();
-        }
-    }
-
-    function backPage() {
-        if (versoPageNum != null) {
-            rectoPageNum = versoPageNum - 1;
-            versoPageNum = rectoPageNum != 1 ? rectoPageNum - 1 : null;
-            render();
-        }
-    }
-
-    function firstPage() {
-        versoPageNum = null;
-        rectoPageNum = 1;
-        render();
-    }
-
-    function lastPage() {
-        if (numPages % 2 == 0) {
-            versoPageNum = numPages;
-            rectoPageNum = null   
-        } else {
-            versoPageNum = numPages - 1;
-            rectoPageNum = numPages;
-        }
-        render();
-    }
-
-    function render() {
-        renderRecto();
-        renderVerso();
-    }
-
-    function renderRecto() {
-        if (rectoPageNum != null) {
-            document.getElementById("current-page").innerHTML = rectoPageNum;
-            renderPageFromNumberAndCanvas(rectoPageNum, recto);
-
-        } else {
-            recto.classList.add("hidden-page");
-        }
-    }
-
-    function renderVerso() {
-        if (versoPageNum != null) {
-            document.getElementById("current-page").innerHTML = versoPageNum;
-            renderPageFromNumberAndCanvas(versoPageNum, verso)
-        } else {
-            verso.classList.add("hidden-page");
-        }
-    }
-
-    function renderPageFromNumberAndCanvas(number, canvas) {
-        pdf.getPage(number).then(function (page) {
-            var viewport = page.getViewport({scale: scale});
-            canvas.height = viewport.height;
-            canvas.width = viewport.width;
-
-            var renderContext = {
-              canvasContext: canvas.getContext("2d"),
-              viewport: viewport
-            };
-            page.render(renderContext).promise.then(function() {
-                canvas.classList.remove("hidden-page");
-            });
-        });
-    }
-
 
 
     // display something if IE is the browser

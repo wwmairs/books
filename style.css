@@ -86,7 +86,7 @@ a {
     padding-top: 10px;
 }
 
-.spreads-container {
+#spreads-container {
     position: absolute;
     top: 50%;
     width: 100%;

@@ -3,20 +3,21 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = "http://mozilla.github.io/pdf.js/build/
 
 class PDFViewer {
 
-    constructor(container) {
+    constructor(container, path) {
         this.versoIndex = null;
         this.rectoIndex = null;
         this.scale = 1.5;
-        this.canvases = [];
+        this.pages = [];
         this.container = container;
+        this.path = path;
+        this.load();
     }
 
-    loadPDFFromPath(path) {
-        this.path = path;
+    load() {
         var _that = this;
         pdfjsLib.getDocument(_that.path).promise.then(function(_pdf) {
             _that.pdf = _pdf;
-            _that.numPages = pdf.numPages;
+            _that.numPages = _pdf.numPages;
             _that.initLoadedPDF();
         }, function (reason) {
             console.error(reason);
@@ -25,7 +26,7 @@ class PDFViewer {
 
     initLoadedPDF() {
         for (var i = 0; i < this.numPages; i++) {
-            initPage(i);
+            this.initPage(i);
         }
     }
 
@@ -33,21 +34,25 @@ class PDFViewer {
         var _that = this;
         var div = document.createElement("div");
         var canvas = document.createElement("canvas");
+        canvas.setAttribute("class", "pdf-page");
+        div.style.display = "none";
         div.appendChild(canvas);
-        this.container.appendChild(canvas);
-        this.canvases.push(canvas);
-        pdf.getPage(index + 1).then(function (page) {
+        div.setAttribute("class", "page-container");
+        this.container.appendChild(div);
+        this.pages.push(div);
+        this.pdf.getPage(index + 1).then(function (page) {
             var viewport = page.getViewport({scale: _that.scale});
             canvas.height = viewport.height;
             canvas.width = viewport.width;
-            canvas.style.display = none;
 
             var renderContext = {
               canvasContext: canvas.getContext("2d"),
               viewport: viewport
             };
             page.render(renderContext).promise.then(function() {
-                canvas.classList.remove("hidden-page");
+                if (index == 0) {
+                    _that.renderFirstPage();
+                }
             }, function (reason) {
                 console.error(reason);
             });
@@ -55,20 +60,20 @@ class PDFViewer {
     }
 
     hideAllPages() {
-        for (var i = 0; i < this.canvases.length; i++) {
-            this.canvases[i].style.display = none;
+        for (var i = 0; i < this.pages.length; i++) {
+            this.pages[i].style.display = "none";
         }
     }
 
     shodAllPages() {
-        for (var i = 0; i < this.canvases.length; i++) {
-            this.canvases[i].style.display = block;
+        for (var i = 0; i < this.pages.length; i++) {
+            this.pages[i].style.display = "block";
         }
     }
 
     showPage(index) {
         if (index != null) {
-            this.canvases[index].style.display = block;   
+            this.pages[index].style.display = "block";   
         }
     }
 
@@ -77,26 +82,27 @@ class PDFViewer {
     }
 
     renderLastPage() {
-        if (numPages % 2 == 0) {
+        if (this.numPages % 2 == 0) {
             this.renderIndeces(this.numPages - 1, null);
         } else {
             this.renderIndeces(this.numPages - 2, this.numPages - 1);
         }
     }
 
-    nextSpreads() { 
-        if (this.rectoIndex != null) {
-            this.renderIndeces(this.rectoIndex + 1, this.versoIndex != this.numPages - 1 ? this.versoIndex + 1 : null);
+    renderNextSpreads() {
+        if (this.rectoIndex != null && this.rectoIndex != this.numPages - 1) {
+            this.renderIndeces(this.rectoIndex + 1, this.rectoIndex != this.numPages - 2 ? this.rectoIndex + 2 : null);
         }
     }
 
-    prevSpreads() {
+    renderPrevSpreads() {
         if (this.versoIndex != null) {
-            this.renderIndeces(this.rectoIndex > 0 ? this.rectoIndex : null, this.versoIndex - 1);
+            this.renderIndeces(this.versoIndex > 1 ? this.versoIndex - 2 : null, this.versoIndex - 1);
         }
     }
 
     renderIndeces(versoIndex, rectoIndex) {
+        console.log("rendering:", versoIndex, rectoIndex);
         this.versoIndex = versoIndex;
         this.rectoIndex = rectoIndex;
         this.hideAllPages();
