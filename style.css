@@ -56,6 +56,7 @@ a {
 
 #content {
     position: relative;
+    margin-top: 10px;
 }
 
 #index-links-container {
