@@ -24,30 +24,22 @@
             </h1>
         </div>
         <div id="content">
-            <div class="spreads-container">
+            <div id="spreads-container">
                 <div id="details-container">
                     <p id="title"></p>
                     <p id="details"></p>
                     <p id="description"></p>
                     <p id="price"></p>
                 </div>
-                <div id="verso-container" class="page-container">
-                    <canvas class="pdf-page hidden-page" id="verso">
-                    </canvas>
-                </div>
-                <div class="page-container">
-                    <canvas class="pdf-page hidden-page" id="recto">
-                    </canvas>
-                </div>
             </div>
         </div>
         <div class="footer pdf-footer hideable">
             <div class="page-controls">
                 <h2>
-                    <span id="first-page" onclick="firstPage()"><<</span>
-                    <span id="back-page" onclick="backPage()"><</span>
-                    <span id="next-page" onclick="nextPage()">></span>
-                    <span id="last-page" onclick="lastPage()">>></span>
+                    <span id="first-page" onclick="pdf.renderFirstPage()"><<</span>
+                    <span id="back-page" onclick="pdf.renderPrevSpreads()"><</span>
+                    <span id="next-page" onclick="pdf.renderNextSpreads()">></span>
+                    <span id="last-page" onclick="pdf.renderLastPage()">>></span>
                  </h2>
             </div>
             <div class="page-number hideable">
@@ -95,6 +87,13 @@
             document.getElementById("price").innerHTML = "$" + details.price + " for a physical object";
         }
         var pdfURL = entry.path + "spreads.pdf";
+        var container = document.getElementById("spreads-container");
+        var loadCallback = function (pdf) {
+            var blankPage = pdf.pages[0];
+            blankPage.remove();
+            pdf.pages[0] = document.getElementById("details-container");
+        }
+        pdf = new PDFViewer(container, pdfURL, loadCallback);
     }
 
 
@@ -140,12 +139,12 @@
         switch(e.which) {
             // left
             case 37: 
-            backPage();
+            pdf.renderPrevSpreads();
             break;
 
             // right
             case 39: 
-            nextPage();
+            pdf.renderNextSpreads();
             break;
 
             default: return;

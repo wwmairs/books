@@ -3,13 +3,14 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = "http://mozilla.github.io/pdf.js/build/
 
 class PDFViewer {
 
-    constructor(container, path) {
+    constructor(container, path, loadCallback) {
         this.versoIndex = null;
         this.rectoIndex = null;
         this.scale = 1.5;
         this.pages = [];
         this.container = container;
         this.path = path;
+        this.loadCallback = loadCallback;
         this.load();
     }
 
@@ -31,6 +32,9 @@ class PDFViewer {
         }
         for (var i = 0; i < totalPages; i++) {
             this.initPage(i);
+        }
+        if (this.loadCallback != null) {
+            this.loadCallback(this);
         }
     }
 
@@ -106,7 +110,6 @@ class PDFViewer {
     }
 
     renderIndeces(versoIndex, rectoIndex) {
-        console.log("rendering", versoIndex, rectoIndex);
         this.versoIndex = versoIndex;
         this.rectoIndex = rectoIndex;
         this.hideAllPages();
