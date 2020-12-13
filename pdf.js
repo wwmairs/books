@@ -6,7 +6,7 @@ class PDFViewer {
     constructor(container, path, loadCallback) {
         this.versoIndex = null;
         this.rectoIndex = null;
-        this.scale = .5;
+        this.scale = 1.5;
         this.pages = [];
         this.container = container;
         this.path = path;
@@ -61,7 +61,7 @@ class PDFViewer {
                   viewport: viewport
                 };
                 page.render(renderContext).promise.then(function() {
-                    if (window.screen.width < 700) {
+                    if (window.screen.width < 750) {
                         _that.showPage(index);
                     } else {
                         if (index == 1) {

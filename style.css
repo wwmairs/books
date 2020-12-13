@@ -87,6 +87,10 @@ a {
     padding-top: 10px;
 }
 
+.page-container {
+    margin-bottom: 40px;
+}
+
 @media screen and (min-width:750px) {
     #spreads-container {
         position: absolute;
@@ -100,6 +104,7 @@ a {
 
     .page-container {
         width: 100%;
+        margin-bottom: 0px;
         position: relative;
     }
 
@@ -170,7 +175,7 @@ a {
         scrollbar-width: none;
         cursor: ns-resize;
     }
-    
+
     #img-container::-webkit-scrollbar {
         display: none;
     }
