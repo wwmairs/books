@@ -184,9 +184,13 @@ a {
     #img-container::-webkit-scrollbar {
         display: none;
     }
+
+    #entries-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 40px;
+    }
 }
-
-
 
 #img-container img {
     width: 100%;
@@ -194,12 +198,6 @@ a {
 
 #img-container img:not(:last-child) {
     margin-bottom: 40px;
-}
-
-#entries-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 40px;
 }
 
 .entry {
