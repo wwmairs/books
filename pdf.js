@@ -6,7 +6,6 @@ class PDFViewer {
     constructor(container, path, loadCallback) {
         this.versoIndex = null;
         this.rectoIndex = null;
-        this.scale = 1.5;
         this.pages = [];
         this.container = container;
         this.path = path;
@@ -51,7 +50,10 @@ class PDFViewer {
             canvas.setAttribute("class", "pdf-page");
             div.appendChild(canvas);
             this.pdf.getPage(index).then(function (page) {
-                var viewport = page.getViewport({scale: _that.scale});
+                var unscaledViewport = page.getViewport(1);
+                var maxWidth = window.screen.width < 750 ? window.screen.width - 62: window.screen.width / 3 - 20;
+                var scale = Math.min((maxWidth / unscaledViewport.viewBox[2]), ((window.screen.height - 50) / unscaledViewport.viewBox[3]));
+                var viewport = page.getViewport({scale: scale});
                 canvas.height = viewport.height;
                 canvas.width = viewport.width;
                 div.style.height = viewport.height + "px";
