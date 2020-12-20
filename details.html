@@ -29,7 +29,7 @@
                     <p id="details"></p>
                     <p id="description"></p>
                     <p id="price"></p>
-                    <p><a id="view-link">view online</a></p>
+                    <p><a id="view-link" style="display: none;">view online</a></p>
                 </div>
                 <div id="img-container"></div>
             </div>
@@ -80,6 +80,9 @@
         document.getElementById("view-link").href = "view.html?title=" + title;
         if (details.price) {
             document.getElementById("price").innerHTML = "$" + details.price + " for a physical object";
+        }
+        if (details.viewOnline) {
+            document.getElementById("view-link").style.display = "initial";
         }
         var imgContainer = document.getElementById("img-container");
         for(var i = 1; i <= details.numPhotos; i++) {

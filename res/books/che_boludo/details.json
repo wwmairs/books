@@ -1,8 +1,7 @@
 {
-    "title": "Taipei Tokyo",
-    "details": "4.25\" x 5.5\", edition of 2",
-    "description": "Here is more detail about the book in question.  Since it's a book maybe it will have a much longer description than just a zine. <br> Perhaps too the description for a book may have multiple paragraphs.  This will be more annoying to deal with in json, perhaps.",
+    "title": "Che Boludo",
+    "details": "8.5\" x 5.5\", one off",
+    "description": "My views of Buenos Aires in a damp winter June.  Milimeter binding.",
     "numPhotos": 3,
-    "price": "20",
     "viewOnline": true
 }

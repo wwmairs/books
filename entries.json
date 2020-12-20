@@ -19,22 +19,26 @@
     },
     {
         "title": "che boludo",
-        "path": "/res/books/che_boludo",
+        "path": "/res/books/che_boludo/",
+        "coverImg": "img-3.jpg",
         "category": "books"
     },
     {
-        "title": "differential & integral calculus",
-        "path": "/res/books/calculus",
+        "title": "piskunov's calculus",
+        "path": "/res/books/calculus/",
+        "coverImg": "img-5.jpg",
         "category": "books"
     },
     {
         "title": "learning of pain",
-        "path": "/res/books/learning_of_pain",
+        "path": "/res/books/learning_of_pain/",
+        "coverImg": "img-3.jpg",
         "category": "books"
     },
     {
-        "title": "solitude & communion",
-        "path": "/res/books/solitude_and_communion",
+        "title": "solitude and communion",
+        "path": "/res/books/solitude_and_communion/",
+        "coverImg": "img-1.jpg",
         "category": "books"
     },
     {
