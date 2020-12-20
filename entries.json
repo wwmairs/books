@@ -56,16 +56,19 @@
     {
         "title": "slip cases",
         "path": "/res/boxes/slip_cases/",
+        "coverImg": "img-3.jpg",
         "category": "boxes"
     },
     {
-        "title": "solanders",
-        "path": "/res/boxes/solanders/",
+        "title": "clamshells",
+        "path": "/res/boxes/clamshells/",
+        "coverImg": "img-7.jpg",
         "category": "boxes"
     },
     {
         "title": "custom boxes",
         "path": "/res/boxes/custom_boxes/",
+        "coverImg": "img-1.jpg",
         "category": "boxes"
     },
     {
