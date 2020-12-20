@@ -43,27 +43,29 @@
     },
     {
         "title": "rebindings",
-        "path": "/res/books/rebindings",
+        "path": "/res/books/rebindings/",
+        "coverImg": "img-8.jpg",
         "category": "books"
     },
     {
         "title": "journals",
-        "path": "/res/books/jourals",
+        "path": "/res/books/journals/",
+        "coverImg": "img-3.jpg",
         "category": "books"
     },
     {
         "title": "slip cases",
-        "path": "/res/boxes/slip_cases",
+        "path": "/res/boxes/slip_cases/",
         "category": "boxes"
     },
     {
         "title": "solanders",
-        "path": "/res/boxes/solanders",
+        "path": "/res/boxes/solanders/",
         "category": "boxes"
     },
     {
         "title": "custom boxes",
-        "path": "/res/boxes/custom_boxes",
+        "path": "/res/boxes/custom_boxes/",
         "category": "boxes"
     },
     {
