@@ -18,8 +18,23 @@
         "category": "books"
     },
     {
-        "title": "special printings",
-        "path": "/res/books/special_printings",
+        "title": "che boludo",
+        "path": "/res/books/che_boludo",
+        "category": "books"
+    },
+    {
+        "title": "differential & integral calculus",
+        "path": "/res/books/calculus",
+        "category": "books"
+    },
+    {
+        "title": "learning of pain",
+        "path": "/res/books/learning_of_pain",
+        "category": "books"
+    },
+    {
+        "title": "solitude & communion",
+        "path": "/res/books/solitude_and_communion",
         "category": "books"
     },
     {
@@ -32,7 +47,21 @@
         "path": "/res/books/jourals",
         "category": "books"
     },
-
+    {
+        "title": "slip cases",
+        "path": "/res/boxes/slip_cases",
+        "category:" "boxes"
+    },
+    {
+        "title": "solanders",
+        "path": "/res/boxes/solanders",
+        "category:" "boxes"
+    },
+    {
+        "title": "custom boxes",
+        "path": "/res/boxes/custom_boxes",
+        "category:" "boxes"
+    },
     {
         "title": "more lines",
         "path": "/res/zines/more_lines/",
