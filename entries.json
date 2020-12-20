@@ -50,17 +50,17 @@
     {
         "title": "slip cases",
         "path": "/res/boxes/slip_cases",
-        "category:" "boxes"
+        "category": "boxes"
     },
     {
         "title": "solanders",
         "path": "/res/boxes/solanders",
-        "category:" "boxes"
+        "category": "boxes"
     },
     {
         "title": "custom boxes",
         "path": "/res/boxes/custom_boxes",
-        "category:" "boxes"
+        "category": "boxes"
     },
     {
         "title": "more lines",
