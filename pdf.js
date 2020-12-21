@@ -85,8 +85,8 @@ class PDFViewer {
         var pageHeight = unscaledViewport.viewBox[3];
         var screenWidth = this.getViewWidth();
         var screenHeight = this.getViewHeight();
-        var maxWidth =  onMobile ? screenWidth - 62 : (screenWidth / 3) - 20;
-        var maxHeight = screenHeight - 50;
+        var maxWidth =  onMobile ? screenWidth - 62 : (screenWidth / 2) - 80;
+        var maxHeight = onMobile ? screenHeight - 50 : (screenHeight * .75);
         var scaleToFillHorizontal = (maxWidth / pageWidth);
         var scaleToFillVertical = (maxHeight / pageHeight);
         var scale = Math.min(scaleToFillHorizontal, scaleToFillVertical);
