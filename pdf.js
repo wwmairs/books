@@ -7,6 +7,7 @@ class PDFViewer {
         this.versoIndex = null;
         this.rectoIndex = null;
         this.pages = [];
+        this.scale = null;
         this.container = container;
         this.path = path;
         this.loadCallback = loadCallback;
@@ -50,10 +51,10 @@ class PDFViewer {
             canvas.setAttribute("class", "pdf-page");
             div.appendChild(canvas);
             this.pdf.getPage(index).then(function (page) {
-                var unscaledViewport = page.getViewport(1);
-                var maxWidth = window.screen.width < 750 ? window.screen.width - 62: window.screen.width / 3 - 20;
-                var scale = Math.min((maxWidth / unscaledViewport.viewBox[2]), ((window.screen.height - 50) / unscaledViewport.viewBox[3]));
-                var viewport = page.getViewport({scale: scale});
+                if (_that.scale == null) {
+                    _that.getScale(page);
+                }
+                var viewport = page.getViewport({scale: _that.scale});
                 canvas.height = viewport.height;
                 canvas.width = viewport.width;
                 div.style.height = viewport.height + "px";
@@ -75,6 +76,29 @@ class PDFViewer {
                 });
             });
         }
+    }
+
+    getScale(page) {
+        var unscaledViewport = page.getViewport(1);
+        var onMobile = window.screen.width < 750;
+        var pageWidth = unscaledViewport.viewBox[2];
+        var pageHeight = unscaledViewport.viewBox[3];
+        var screenWidth = this.getViewWidth();
+        var screenHeight = this.getViewHeight();
+        var maxWidth =  onMobile ? screenWidth - 62 : (screenWidth / 3) - 20;
+        var maxHeight = screenHeight - 50;
+        var scaleToFillHorizontal = (maxWidth / pageWidth);
+        var scaleToFillVertical = (maxHeight / pageHeight);
+        var scale = Math.min(scaleToFillHorizontal, scaleToFillVertical);
+        this.scale = scale;
+    }
+
+    getViewWidth() {
+        return Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+    }
+
+    getViewHeight() {
+        return Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
     }
 
     hideAllPages() {
