@@ -72,13 +72,27 @@
         "category": "boxes"
     },
     {
+        "title": "november 2020",
+        "path": "/res/zines/november_2020/",
+        "coverImg": "img-1.jpg",
+        "category": "zines"
+    },
+    {
         "title": "more lines",
         "path": "/res/zines/more_lines/",
+        "coverImg": "img-1.jpg",
+        "category": "zines"
+    },
+    {
+        "title": "september",
+        "path": "/res/zines/september/",
+        "coverImg": "img-1.jpg",
         "category": "zines"
     },
     {
         "title": "sun spots",
         "path": "/res/zines/sun_spots/",
+        "coverImg": "img-1.jpg",
         "category": "zines"
     }
 ]
