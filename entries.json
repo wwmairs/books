@@ -1,5 +1,11 @@
 [
     {
+        "title": "people apartments",
+        "path": "res/books/people_apartments/",
+        "coverImg": "img-1.jpg",
+        "category": "books"
+    },
+    {
         "title": "shapes left behind",
         "path": "/res/books/shapes_left_behind/",
         "coverImg": "img-1.jpg",
