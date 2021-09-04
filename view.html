@@ -14,7 +14,7 @@
 
 <body>
     <div class="wrapper">
-        <div class="nav hideable">
+        <div id="header" class="nav hideable">
             <h1>
                 <a href="/">home</a>
                 >
@@ -77,6 +77,17 @@
     }
 
     document.getElementById("content").onmouseenter = function(e) {
+        window.clearTimeout(timeout);
+        showThings();
+    }
+
+    document.getElementById("header").onmouseleave = function(e) {
+        timeout = window.setTimeout(function() {
+            hideThings();
+        }, 1250);
+    }
+
+    document.getElementById("header").onmouseenter = function(e) {
         window.clearTimeout(timeout);
         showThings();
     }

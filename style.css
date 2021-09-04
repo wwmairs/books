@@ -16,7 +16,7 @@ h1 {
     font-size: 14pt;
     letter-spacing: 3px;
     margin-bottom: 0px;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 h2 {
@@ -39,7 +39,8 @@ a {
 }
 
 .wrapper {
-    height: 100vh;
+    height: 100%;
+
 }
 
 .title {
@@ -66,12 +67,12 @@ a {
     top: 0;
     left: 0;
     width: 100%;
+    background: #fff;
+    z-index: 2;
 }
 
 #content {
-    position: relative;
     margin-top: 100px;
-    overflow: auto;
 }
 
 #index-links-container {
@@ -109,10 +110,25 @@ a {
     margin-bottom: 25vh;
 }
 
+#spreads-container {
+    margin-bottom: 30px;
+}
+
+#details-imgs-container {
+    margin-bottom: 30px;
+}
+
 @media screen and (min-width:750px) {
+    #details-imgs-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+    }
+
     #spreads-container {
         position: absolute;
         top: 50%;
+        left: 0;
         width: 100%;
         transform: translateY(-50%);
         display: grid;
@@ -139,6 +155,10 @@ a {
 }
 
 .pdf-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
     display: grid; 
     grid-template-columns: repeat(3, 1fr);
 }
@@ -187,18 +207,6 @@ a {
 
 
 @media screen and (min-width:750px) {
-    #img-container {
-        max-height: 66vh;
-        overflow-y: scroll;
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-        cursor: ns-resize;
-    }
-
-    #img-container::-webkit-scrollbar {
-        display: none;
-    }
-
     #entries-container {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
