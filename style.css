@@ -39,24 +39,38 @@ a {
 }
 
 .wrapper {
-    display: grid;
-    grid-template-rows: 50px 1fr 50px;
     height: 100vh;
 }
 
 .title {
     text-align: right;
     border-bottom: 1px solid black;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.title > h1 {
+    margin-right: 30px;
+}
+
+.nav > h1 {
+    margin-right: 30px;
 }
 
 .nav {
     text-align: right;
     border-bottom: 1px solid black;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
 }
 
 #content {
     position: relative;
-    margin-top: 10px;
+    margin-top: 100px;
     overflow: auto;
 }
 
